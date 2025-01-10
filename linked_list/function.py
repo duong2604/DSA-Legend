@@ -62,45 +62,74 @@ class LinkedList:
         self.head = prev  # Update head to the new front of the list
 
     def deleteNode(self, data):
-        if self.is_empty():
-            print("The list is empty.")
+        if self.head is None:
             return
-
-        if self.head.data == data:
-            self.head = self.head.next
-            return
-        
+      
         current_node = self.head
         while current_node.next and current_node.next.data != data:
             current_node = current_node.next
+    
+        if current_node is None:
+            return self.head
         
-        if current_node.next is None:
-            print("Node not found.")
+        current_node.next = current_node.next.next
+
+    # Insert a node at the beginning of the linked list
+    def insert_at_begin(self,data):
+        new_node = Node(data)
+        new_node.next = self.head
+        self.head = new_node
+    
+    
+    
+    # Insert a node at the end of the linked list
+    def insert_at_the_end(self,data):
+        new_node = Node(data)
+        
+        if self.head is None: 
+            self.head = new_node
             return
-        else:
-            current_node.next = current_node.next.next
         
+        current_node = self.head
+        while current_node.next:
+            current_node = current_node.next
+        current_node.next = new_node
+        
+    def insert_node(self, data, position):
+        new_node = Node(data)
+        if position == 0:
+            new_node.next = self.head
+            self.head = new_node
+            return
+        current_node = self.head
+        for _ in range(position - 1):
+            if current_node is None:
+                return
+            current_node = current_node.next
+        
+        new_node.next = current_node.next
+        current_node.next = new_node
+        
+        
+     
+    
+    
 
 # Example Usage
 ll = LinkedList()
 ll.append(1)
 ll.append(2)
-ll.append(3)
 ll.append(4)
 ll.append(5)
 ll.append(6)
 
 print("Original List:")
-ll.traverseAndPrint()  # Outputs: 1 -> 2 -> 3 -> null
+ll.traverseAndPrint()  
 
-ll.reverse()  # Reverse the linked list
+# ll.insert_at_begin(3)
+# ll.insert_at_the_end(20)
 
-print("Reversed List:")
-ll.traverseAndPrint()  # Outputs: 3 -> 2 -> 1 -> null
+ll.insert_node(32, 2)
 
-# Find index of a node
-index = ll.findIndexOfNode(2)
-print(">>>>>>>>>>>>>>>>>> index of node:" , index)  
 
-ll.deleteNode(3)
 ll.traverseAndPrint()
